@@ -78,6 +78,7 @@ function calculateTotalOrderPrice($order_details){
                 
         <?php if($order_status == "not paid"){?>
             <form style="float: right;" method="POST" action="payment.php">
+                <input type="hidden" name="order_id" value="<?php echo $order_id; ?>" />
                 <input type="hidden" name="order_total_price" value="<?php echo $order_total_price; ?>" />
                 <input type="hidden" name="order_status" value="<?php echo $order_status; ?>" />
                 <input type="submit" name="order_pay_btn" class="btn btn-primary" value="Pay Now" />

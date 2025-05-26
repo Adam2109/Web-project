@@ -111,48 +111,58 @@ if(isset($_POST['search'])){
     </section>
 
     <!-- Shop -->
-    <section id="featured" class="my-5 py-5">
-        <div class="container mt-5 py-5">
-            <h3>Our Products</h3>
-            <hr>
-            <p>Here you can check out our featured products</p>
-        </div>
-        <div class="row mx-auto container">
+<section id="featured" class="my-5 py-5">
+  <div class="container mt-5 py-5">
+    <h3>Our Products</h3>
+    <hr>
+    <p>Here you can check out our featured products</p>
+  </div>
+  <div class="row mx-auto container">
+    <?php while ($row = $products->fetch_assoc()) { ?>
+      <div class="product text-center col-lg-3 col-md-4 col-sm-12" style="position: relative;">
+        <!-- Кнопка-сердечко -->
+        <form method="POST" action="add_to_wishlist.php" class="wishlist-btn-container">
+          <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>" />
+          <button type="submit" class="wishlist-btn" title="Add to wishlist">
+            <i class="far fa-heart"></i>
+            <i class="fas fa-heart"></i>
+          </button>
+        </form>
 
-        <?php while($row = $products->fetch_assoc()) { ?>
-            <div onclick="window.location.href='single_product.php';" class="product text-center col-lg-3 col-md-4 col-sm-12">
-                <img class="img-fluid mb-3" src="assets/imgs/<?php echo $row['product_image']; ?>"/>
-                <div class="star">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <h5 class="p-name"><?php echo $row['product_name']; ?></h5>
-                <h4 class="p-price">$<?php echo $row['product_price']; ?></h4>
-                <a class="btn buy-btn" href="<?php echo "single_product.php?product_id=" . $row['product_id']; ?>">Buy Now</a>
-            </div>
+        <img class="img-fluid mb-3" src="assets/imgs/<?php echo $row['product_image']; ?>" />
+        <div class="star">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+        </div>
+        <h5 class="p-name"><?php echo $row['product_name']; ?></h5>
+        <h4 class="p-price">$<?php echo $row['product_price']; ?></h4>
+        <a class="btn buy-btn" href="single_product.php?product_id=<?php echo $row['product_id']; ?>">
+          Buy Now
+        </a>
+      </div>
+    <?php } ?>
+
+    <!-- пагінація -->
+    <nav aria-label="Page navigation example" class="mx-auto">
+      <ul class="pagination mt-5 mx-auto">
+        <li class="page-item <?php if ($page_no <= 1) echo 'disabled'; ?>">
+          <a class="page-link" href="<?php echo $page_no <= 1 ? '#' : '?page_no=' . ($page_no - 1); ?>">Previous</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="?page_no=1">1</a></li>
+        <li class="page-item"><a class="page-link" href="?page_no=2">2</a></li>
+        <?php if ($page_no >= 3) { ?>
+          <li class="page-item"><a class="page-link" href="#">...</a></li>
+          <li class="page-item"><a class="page-link" href="?page_no=<?php echo $page_no; ?>"><?php echo $page_no; ?></a></li>
         <?php } ?>
-
-        <nav aria-label="Page navigation example" class="mx-auto">
-            <ul class="pagination mt-5 mx-auto">
-                <li class="page-item <?php if($page_no<=1){echo 'disabled';}?>">
-                    <a class="page-link" href="<?php if($page_no<=1){echo '#';}else{echo "?page_no=".($page_no-1);}?>">Previous</a>
-                </li>
-
-                <li class="page-item"><a class="page-link" href="?page_no=1">1</a></li>
-                <li class="page-item"><a class="page-link" href="?page_no=2">2</a></li>
-                <?php if($page_no >=3) {?>
-                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                    <li class="page-item"><a class="page-link" href="<?php echo "?page_no=".$page_no;?>"><?php echo $page_no;?></a></li>
-                <?php } ?>
-                <li class="page-item <?php if($page_no>= $total_no_of_pages){echo 'disabled';}?>">
-                    <a class="page-link" href="<?php if($page_no >= $total_no_of_pages){echo '#';}else{echo "?page_no=".($page_no+1);}?>">Next</a>
-                </li>
-            </ul>
-        </nav>
-        </div>
-    </section>
+        <li class="page-item <?php if ($page_no >= $total_no_of_pages) echo 'disabled'; ?>">
+          <a class="page-link" href="<?php echo $page_no >= $total_no_of_pages ? '#' : '?page_no=' . ($page_no + 1); ?>">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</section>
 
 <?php include('layouts/footer.php'); ?>

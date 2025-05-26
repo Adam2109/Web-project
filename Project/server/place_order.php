@@ -56,6 +56,8 @@
                 //remove everthing --> delay until payment is done
                 // unset($_SESSION['cart']);
                 
+                $_SESSION['order_id'] = $order_id;
+
                 //inform user whether everything is fine or not
                 header('location: ../payment.php?order_status=order placed successfully');
 
